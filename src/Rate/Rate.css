@@ -1,0 +1,13 @@
+.currency-name {
+    font-family: Oswald;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.calc-res {
+    font-size: 1.2rem;
+}
+
+.calc-res li {
+    margin: 10px 0;
+}
