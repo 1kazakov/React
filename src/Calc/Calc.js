@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Calc.css';
+import * as selectors from '../store/reducer';
 
 
-
-class Calc extends React.Component {
+class Calc extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -16,10 +17,11 @@ class Calc extends React.Component {
         let elements = evt.target.elements;
         let inputCurrency = elements['input--currency'].value;
         let typeCurrency = elements['type--currency'].value;
-        this.setState({ result: (this.props.rate[typeCurrency].Value * inputCurrency).toFixed(2) })
+        this.setState({ result: (this.props.currency[typeCurrency].Value * inputCurrency).toFixed(2) })
     }
 
     render() {
+        const { currency = {} } = this.props
         return (
             <div className="calculator">
                 <h3> Калькулятор обмена</h3>
@@ -28,9 +30,9 @@ class Calc extends React.Component {
                     <div>
                         <form onSubmit={this.calcRate}>
                             <input type="number" defaultValue="150" name="input--currency" />
-                            <select name="type--currency" id="">
-                                {Object.keys(this.props.rate).map((keyName) => (
-                                    <option key={keyName} value={keyName}>{keyName}</option>
+                            <select name="type--currency" >
+                                {Object.keys(currency).map((keyName) => (
+                                    < option key={keyName} value={keyName} > {keyName}</option>
                                 ))}
                             </select>
                             <input type="submit" defaultValue="calc" />
@@ -43,17 +45,15 @@ class Calc extends React.Component {
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     }
 }
 
-export default Calc;
+const mapStateToProps = (state) => {
+    return {
+        currency: selectors.getCurrency(state)
+    }
+}
 
-        // CharCode: "EUR"
-        // ID: "R01239"
-        // Name: "Евро"
-        // Nominal: 1
-        // NumCode: "978"
-        // Previous: 70.6761
-// Value: 70.4111
+export default connect(mapStateToProps)(Calc);

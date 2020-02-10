@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -6,40 +7,43 @@ import Header from './Header/Header';
 import Footer from './Footer/Footer';
 import Rate from './Rate/Rate';
 import About from './About/About';
+import CookieWarning from './CookieWarning/CookieWarning';
 
-class App extends React.Component {
+import * as actions from './store/actions';
+
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showWarning: true,
+    }
+  }
+  onClick = (value) => {
+    this.setState({ showWarning: false })
+  }
 
   render() {
+    this.props.dispatch(actions.getData());
     return (
-      <div>
+      <Router>
 
         <Header />
 
         <div className="container" style={{ marginBottom: '100px' }}>
           <main>
-            <Router>
-              <Switch>
-                <Route exact path="/" component={Rate} />
-                <Route exact path="/about" component={About} />
-              </Switch>
-            </Router>
+            <Switch>
+              <Route exact path="/" component={Rate} />
+              <Route exact path="/about" component={About} />
+            </Switch>
           </main>
         </div>
 
-        <div className="container" id="cookie_info">
-          <div className="site-content">
-            <div className="well">На нашем сайте мы используем cookie для сбора информации технического характера.<br />В
-                частности, для персонифицированной работы сайта мы обрабатываем IP-адрес региона вашего
-            местоположения.&nbsp;<a className="btn btn-primary btn-sm">OK</a></div>
-          </div>
-        </div>
-
-
+        {this.state.showWarning ? <CookieWarning onclick={this.onClick} /> : null}
         <Footer />
-
-      </div>
+      </Router>
     )
   }
 }
 
-export default App;
+export default connect()(App);

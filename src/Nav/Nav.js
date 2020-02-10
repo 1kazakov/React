@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Nav.css';
 
-class Nav extends React.Component {
-
-
+class Nav extends Component {
     render() {
         return (
             <div className="header-nav">
                 <div className="container">
                     <nav>
                         <ul>
-                            <li><a href="/">Главная</a></li>
-                            <li><a href="/about">О нас</a></li>
+                            <li><Link to="/">Главная</Link></li>
+                            <li><Link to="/about">О нас</Link></li>
                         </ul>
                     </nav>
                 </div>

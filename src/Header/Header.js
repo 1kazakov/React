@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './Header.css';
 
 import Nav from '../Nav/Nav';
 
-class Header extends React.Component {
+class Header extends Component {
 
     render() {
         return (
@@ -12,10 +12,8 @@ class Header extends React.Component {
                 <div className="main-header">
                     <div className="container">
                         <h1 className="site-title">Курс валют</h1>
-
                     </div>
                 </div>
-
                 <Nav />
             </header>
         )

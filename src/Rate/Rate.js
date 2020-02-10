@@ -1,54 +1,46 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Rate.css';
-// import { get } from 'http';
+
+import * as selectors from '../store/reducer';
 
 import Calc from '../Calc/Calc';
 
 
-class Rate extends React.Component {
+class Rate extends Component {
     constructor(props) {
         super(props);
         this.state = {
             date: '',
-            currencyRate: {}
         }
-        this.currency = ['USD', 'EUR', 'AMD']
-        this.getRate()
     }
-    getRate = () => {
-        fetch('https://www.cbr-xml-daily.ru/daily_json.js')
-            .then((response) => {
-                return response.json();
-            })
-            .then((response) => {
 
-                let date = new Date(response.Date);
-                let result = {};
-                for (let i = 0; i < this.currency.length; i++) {
-                    result[this.currency[i]] = response.Valute[this.currency[i]]
-                }
-                this.setState({ currencyRate: result, date: ` ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}` });
-            })
-
-    }
     render() {
+        console.log('currency', this.props.currency)
+        const { currency = {} } = this.props;
         return (
             <div>
-                <h3> Курс валют на{this.state.date}</h3>
+                <h3 > Курс валют на{this.state.date}</h3>
                 <div className="flex-container">
 
-                    {Object.keys(this.state.currencyRate).map((keyName) => (
+                    {Object.keys(currency).map((keyName) => (
                         <div className="block flex-item" key={keyName}>
                             <div className="currency-name">{keyName}</div>
-                            <div className="currency-in">1 {this.state.currencyRate[keyName].Name} стоит {this.state.currencyRate[keyName].Value.toFixed(2)} руб.</div>
+                            <div className="currency-in">1 {currency[keyName].Name} стоит {currency[keyName].Value.toFixed(2)} руб.</div>
                         </div>
                     ))}
 
                 </div>
-                <Calc rate={this.state.currencyRate} />
+                <Calc />
             </div>
         )
     }
 }
 
-export default Rate;
+const mapStateToProps = (state) => {
+    return {
+        currency: selectors.getCurrency(state)
+    }
+}
+
+export default connect(mapStateToProps)(Rate);
