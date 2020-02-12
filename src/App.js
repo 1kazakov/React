@@ -19,12 +19,15 @@ class App extends Component {
       showWarning: true,
     }
   }
+  ComponentDidMount(){
+    this.props.dispatch(actions.getData());
+  }
   onClick = (value) => {
     this.setState({ showWarning: false })
   }
 
   render() {
-    this.props.dispatch(actions.getData());
+    
     return (
       <Router>
 
